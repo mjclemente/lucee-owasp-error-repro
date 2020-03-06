@@ -1,14 +1,13 @@
-When using the OWASP ESAPI methods in Lucee, such as `encodeForHTML()`, an error appears in the console the first time they are encountered.
+# OWASP ESAPI Logging Issue
+
+If the OWASP ESAPI methods in Lucee, such as `encodeForHTMLAttribute()`, are called under load, `System.out` appears to get permanently redirected to dev/null. That is, it breaks `systemOutput()`.
 
 To reproduce, clone this repository and with CommandBox run:
 
 ```
-server start --debug --console
+server start --console
 ```
 
-The following two errors are shown in the console:
+Once the site is up, you'll see that refeshing the page logs the date/time to the console.
 
-```
-[ERROR] System property [org.owasp.esapi.opsteam] is not set
-[ERROR] System property [org.owasp.esapi.devteam] is not set
-```
+Using a tool like JMeter or Screaming Frog, hit the site with several threads. You'll see that the outputting of the date stops abruptly. `SystemOutput()` no longer logs the date. It seems the `System.out` has been redirected.
